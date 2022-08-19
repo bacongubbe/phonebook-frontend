@@ -1,17 +1,46 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Phonebook</title>
-    <link href="style.css" rel="stylesheet"/>
-    <script src="functions.js"></script>
-</head>
-<body>
+    <link href="style.css" rel="stylesheet" />
+    <script>
+      function getContacts(element) {
+        fetch("http://localhost:8080/contacts", {
+          mode: "no-cors",
+        })
+          .then((response) => response.json())
+          .then((data) => {
+            const contactList = createContactList(data);
+            element.appendChild(contactList);
+          });
+      }
+
+      function createContactList(contacts) {
+        const contactList = document.createElement("div");
+
+        for (let i = 0; i < contacts.length; i++) {
+          const contactDiv = document.createElement("div");
+          contactDiv.className = "contact";
+
+          contactDiv.appendChild(createContactName(contacts[i]));
+          contactDiv.appendChild();
+          contactDiv.appendChild();
+        }
+      }
+
+      function createContactName(contact) {
+        const contactName = document.createElement("h3");
+        contactName.textContent = `${contact.name}`;
+
+        return contactName;
+      }
+    </script>
+  </head>
+  <body>
     <header></header>
-    <main>
-        
-    </main>
-</body>
+    <main></main>
+  </body>
 </html>
