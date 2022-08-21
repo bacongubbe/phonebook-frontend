@@ -1,55 +1,110 @@
 function getContacts(element) {
-    fetch("http://localhost:8080/contacts")
-      .then((response) => response.json())
-      .then((data) => {
-        const contactList = createContactList(data);
-        element.appendChild(contactList);
-      });
+  fetch("http://localhost:8080/contacts")
+    .then((response) => response.json())
+    .then((data) => {
+      const contactList = createContactList(data);
+      element.appendChild(contactList);
+    });
+}
+
+function createContactList(contacts) {
+  const contactList = document.createElement("div");
+  contactList.className = "contactList";
+
+  for (let i = 0; i < contacts.length; i++) {
+    const contactDiv = document.createElement("div");
+    contactDiv.className = "contactDiv";
+
+    contactDiv.appendChild(createContactName(contacts[i]));
+    contactDiv.appendChild(createContactAddress(contacts[i]));
+    contactDiv.appendChild(createContactNumber(contacts[i]));
+    contactDiv.appendChild(createEditButton(contacts[i]));
+
+    contactList.appendChild(contactDiv);
   }
 
-  function createContactList(contacts) {
-    const contactList = document.createElement("div");
-    contactList.className = "contactList";
+  contactList.appendChild(createAddContactButton());
 
-    for (let i = 0; i < contacts.length; i++) {
-      const contactDiv = document.createElement("div");
-      contactDiv.className = "contactDiv";
+  return contactList;
+}
 
-      contactDiv.appendChild(createContactName(contacts[i]));
-      contactDiv.appendChild(createContactAddress(contacts[i]));
-      contactDiv.appendChild(createContactNumber(contacts[i]));
+function createContactName(contacts) {
+  const contactName = document.createElement("h3");
+  contactName.className = "contactName";
+  contactName.textContent = `${contacts.name}`;
 
-      contactList.appendChild(contactDiv);
-    }
+  return contactName;
+}
 
-    return contactList;
-  }
+function createContactAddress(contacts) {
+  const contactAddress = document.createElement("h4");
+  contactAddress.className = "contactAddress";
+  contactAddress.textContent = "📌Address: " + `${contacts.address}`;
 
-  function createContactName(contacts) {
-    const contactName = document.createElement("h3");
-    contactName.className = "contactName";
-    contactName.textContent = `${contacts.name}`;
+  return contactAddress;
+}
 
-    return contactName;
-  }
+function createContactNumber(contacts) {
+  const contactNumber = document.createElement("h4");
+  contactNumber.className = "contactNumber";
+  contactNumber.textContent = "📞tel: " + `${contacts.phoneNumber}`;
 
-  function createContactAddress(contacts){
-    const contactAddress = document.createElement('h4');
-    contactAddress.className = "contactAddress";
-    contactAddress.textContent = `${contacts.address}`;
+  return contactNumber;
+}
 
-    return contactAddress;
-  }
+function createEditButton(contacts) {
+  const editButton = document.createElement("button");
+  editButton.className = "editButton";
+  editButton.textContent = "Edit";
 
-  function createContactNumber(contacts){
-    const contactNumber = document.createElement('h4');
-    contactNumber.className = "contactNumber";
-    contactNumber.textContent = `${contacts.phoneNumber}`;
+  return editButton;
+}
 
-    return contactNumber;
-  }
+function createAddContactButton() {
+  const addContactButton = document.createElement("div");
+  addContactButton.className = "addContactButton";
+  addContactButton.addEventListener("click", () => addContact());
 
-  document.addEventListener("DOMContentLoaded", () => {
-    const mainElement = document.querySelector("main");
-    getContacts(mainElement);
+  const addPlusSign = document.createElement("h1");
+  addPlusSign.textContent = "+";
+  addPlusSign.className = "plusSign";
+
+  addContactButton.appendChild(addPlusSign);
+
+  return addContactButton;
+}
+
+function addContact() {
+  console.log("clickityclick");
+  window.location.href = "createContactPage.html";
+}
+
+function Contact(obj) {
+  this.name = obj.name;
+  this.address = obj.address;
+  this.phoneNumber = obj.phoneNumber;
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  document.getElementById("submitButton").addEventListener("click", () => {
+    var contactName = document.getElementById("nameInput").value;
+    var contactAddress = document.getElementById("addressInput").value;
+    var contactNumber = document.getElementById("numberInput").value;
+
+    var contact = new Contact({
+      name: contactName,
+      address: contactAddress,
+      phoneNumber: contactNumber,
+    });
+
+    console.log(contact);
+
+    fetch("http://localhost:8080/contacts", {
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(contact),
+    });
   });
+});

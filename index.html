@@ -6,10 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Phonebook</title>
     <link href="style.css" rel="stylesheet" />
-    <script src="functions.js"> </script>
+    <script src="functions.js"></script>
   </head>
   <body>
     <header></header>
     <main></main>
   </body>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const mainElement = document.querySelector("main");
+      getContacts(mainElement);
+    });
+  </script>
 </html>
