@@ -151,6 +151,8 @@ function createCancelButton(){
   cancelButton.className = 'button';
   cancelButton.textContent = 'Cancel';
 
+  cancelButton.onclick = () => {location.reload()};
+
   return cancelButton;
 }
 
