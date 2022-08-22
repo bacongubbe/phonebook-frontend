@@ -13,11 +13,9 @@ nav {
 .addContactButton {
   display: flex;
   justify-content: center;
-  text-align: center;
-  align-content: center;
-  flex-direction: column;
-  min-width: 250px;
-  min-height: 170px;
+  flex-wrap: wrap;
+  width: 250px;
+  height: 170px;
   border: 1px dotted black;
   border-radius: 15px;
   padding: 15px;
@@ -29,9 +27,18 @@ nav {
   background-color: rgb(209, 252, 252);
 }
 
-.plusSign {
+#plusSign {
+  display:flex;
+  height: 100%;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
   font-size: 75px;
   font-weight:100;
+}
+
+#plusSign:hover {
+  cursor:pointer;
 }
 
 .contactList {
@@ -66,8 +73,7 @@ nav {
   margin-bottom: 25px;
 }
 
-.editButton,
-.deleteButton {
+.button {
   align-self: center;
   background-color: #fff;
   width: 125px;
@@ -99,14 +105,12 @@ nav {
   touch-action: manipulation;
 }
 
-.editButton:hover,
-.deleteButton:hover {
+.button:hover {
   box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 8px -5px;
   transform: translate3d(0, 2px, 0);
 }
 
-.editButton:focus,
-.deleteButton:focus {
+.button:focus {
   box-shadow: rgba(0, 0, 0, 0.3) 2px 8px 4px -6px;
 }
 
@@ -115,4 +119,17 @@ nav {
 .deleteButton:hover {
   background-color: rgb(253, 52, 52);
   color: black;
+}
+
+#submitButton,
+#submitButton:hover,
+#submitButton:focus {
+  background-color: rgb(91, 255, 91);
+  color: black;
+}
+
+.input {
+  display: flex;
+  height: 30px;
+  width: 250px;
 }
