@@ -19,6 +19,7 @@ function createContactList(contacts) {
     contactDiv.appendChild(createContactAddress(contacts[i]));
     contactDiv.appendChild(createContactNumber(contacts[i]));
     contactDiv.appendChild(createEditButton(contacts[i]));
+    contactDiv.appendChild(createDeleteButton(contacts[i]))
 
     contactList.appendChild(contactDiv);
   }
@@ -58,6 +59,16 @@ function createEditButton(contacts) {
   editButton.textContent = "Edit";
 
   return editButton;
+}
+
+function createDeleteButton (contacts){
+  const deleteButton = document.createElement('button');
+  deleteButton.className = 'deleteButton';
+  deleteButton.id = `${contacts.id}`;
+  deleteButton.textContent = 'Delete';
+  deleteButton.onclick = () => {deleteContact(deleteButton.id)};
+
+  return deleteButton;
 }
 
 function createAddContactButton() {
@@ -106,5 +117,19 @@ document.addEventListener("DOMContentLoaded", () => {
       },
       body: JSON.stringify(contact),
     });
+
+    window.location.href = "index.html";
+
   });
 });
+
+function deleteContact (id){
+  fetch("http://localhost:8080/contacts/"+id, {
+    method: 'DELETE',
+    headers: {
+      "Content-type": "application/json"
+    }
+  });
+
+  location.reload();
+}
