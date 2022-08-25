@@ -14,11 +14,12 @@ function createContactList(contacts) {
   for (let i = 0; i < contacts.length; i++) {
     const contactDiv = document.createElement("div");
     contactDiv.className = "contactDiv";
+    contactDiv.id = i; 
 
     contactDiv.appendChild(createContactName(contacts[i]));
     contactDiv.appendChild(createContactAddress(contacts[i]));
     contactDiv.appendChild(createContactNumber(contacts[i]));
-    contactDiv.appendChild(createEditButton(contacts[i]));
+    contactDiv.appendChild(createEditButton(i, contacts[i]));
     contactDiv.appendChild(createDeleteButton(contacts[i]))
 
     contactList.appendChild(contactDiv);
@@ -53,10 +54,12 @@ function createContactNumber(contacts) {
   return contactNumber;
 }
 
-function createEditButton(contacts) {
+function createEditButton(div, contacts) {
   const editButton = document.createElement("button");
   editButton.className = "editButton button";
   editButton.textContent = "Edit";
+
+  editButton.onclick = () => {editcontactField(div, contacts)};
 
   return editButton;
 }
@@ -64,9 +67,8 @@ function createEditButton(contacts) {
 function createDeleteButton (contacts){
   const deleteButton = document.createElement('button');
   deleteButton.className = 'deleteButton button';
-  deleteButton.id = `${contacts.id}`;
   deleteButton.textContent = 'Delete';
-  deleteButton.onclick = () => {deleteContact(deleteButton.id)};
+  deleteButton.onclick = () => {deleteContact(`${contacts.id}`)};
 
   return deleteButton;
 }
@@ -86,7 +88,6 @@ function createAddContactButton() {
 }
 
 function displayContactField() {
-  console.log("clickityclick");
   hidePlusSign();
   
   const addContactButton = document.querySelector(".addContactButton");
@@ -104,43 +105,47 @@ function hidePlusSign(){
   document.getElementById("plusSign").style.display = 'none';
 }
 
-function createNameInput(){
+function createNameInput(name){
   const createNameInput = document.createElement('input');
   createNameInput.type = 'text';
   createNameInput.className = 'input';
   createNameInput.id = 'nameInput';
-  createNameInput.placeholder = 'Name';
+  if (name == null){createNameInput.placeholder = 'Name';}
+  else createNameInput.placeholder = name;
 
   return createNameInput;
 }
 
-function createAddressInput(){
+function createAddressInput(address){
   const createAddressInput = document.createElement('input');
   createAddressInput.type = 'text';
   createAddressInput.className = 'input';
   createAddressInput.id = 'addressInput';
-  createAddressInput.placeholder = 'Address';
+  if (address == null){createAddressInput.placeholder = 'Address';}
+  else createAddressInput.placeholder = address;
 
   return createAddressInput;
 }
 
-function createNumberInput(){
+function createNumberInput(phoneNumber){
   const createNumberInput = document.createElement('input');
   createNumberInput.type = 'text';
   createNumberInput.className = 'input';
   createNumberInput.id = 'numberInput';
-  createNumberInput.placeholder = 'Tel: ';
+  if (phoneNumber == null) {createNumberInput.placeholder = 'Tel: ';}
+  else createNumberInput.placeholder = 'tel: '+ phoneNumber;
+  
 
   return createNumberInput;
 }
 
-function createSubmitButton(){
+function createSubmitButton(id){
   const submitButton = document.createElement('button');
   submitButton.id = 'submitButton';
   submitButton.className = 'button';
   submitButton.textContent = 'Submit';
 
-  submitButton.onclick = () => {submitContact()};
+  submitButton.onclick = () => {submitContact(id)};
 
   return submitButton;
 }
@@ -162,7 +167,7 @@ function Contact(obj) {
   this.phoneNumber = obj.phoneNumber;
 }
 
-function submitContact(){
+function submitContact(id){
     var contactName = document.getElementById("nameInput").value;
     var contactAddress = document.getElementById("addressInput").value;
     var contactNumber = document.getElementById("numberInput").value;
@@ -173,20 +178,59 @@ function submitContact(){
       phoneNumber: contactNumber,
     });
 
-    console.log(contact);
-
+    if(id == null) {
     fetch("http://localhost:8080/contacts", {
       method: "POST",
       headers: {
         "Content-type": "application/json",
       },
       body: JSON.stringify(contact),
+    });}
+    
+    else {
+      fetch("http://localhost:8080/contacts/"+id, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify(contact),
     });
+    }
 
     location.reload();
 };
 
+function editcontactField(div, contacts){
+  console.log("Edit!");
+  hideElements(div,contacts); 
+  const editContactField = document.querySelector(`[id=${CSS.escape(div)}]`);
+
+  editContactField.appendChild(createNameInput(contacts.name));
+  editContactField.appendChild(createAddressInput(contacts.address));
+  editContactField.appendChild(createNumberInput(contacts.phoneNumber));
+
+  editContactField.appendChild(createSubmitButton(contacts.id));
+  editContactField.appendChild(createCancelButton());
+
+}
+
+function hideElements(div,contacts){
+  const thisName = document.querySelector(`[id=${CSS.escape(div)}] h3.contactName`);
+  const thisAddress = document.querySelector(`[id=${CSS.escape(div)}] h4.contactAddress`);
+  const thisNumber = document.querySelector(`[id=${CSS.escape(div)}] h4.contactNumber`);
+  
+  const thisEditButton = document.querySelector(`[id=${CSS.escape(div)}] button.editButton`);
+  const thisDeleteButton = document.querySelector(`[id=${CSS.escape(div)}] button.deleteButton`);
+
+  thisName.style.display = 'none';
+  thisAddress.style.display = 'none';
+  thisNumber.style.display = 'none';
+  thisEditButton.style.display = 'none';
+  thisDeleteButton.style.display = 'none';
+}
+
 function deleteContact (id){
+
   fetch("http://localhost:8080/contacts/"+id, {
     method: 'DELETE',
     headers: {
