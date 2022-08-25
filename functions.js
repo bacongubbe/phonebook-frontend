@@ -185,7 +185,8 @@ function submitContact(id){
         "Content-type": "application/json",
       },
       body: JSON.stringify(contact),
-    });}
+    })
+    .then (location.reload());}
     
     else {
       fetch("http://localhost:8080/contacts/"+id, {
@@ -194,10 +195,9 @@ function submitContact(id){
         "Content-type": "application/json",
       },
       body: JSON.stringify(contact),
-    });
+    })
+    .then (location.reload());
     }
-
-    location.reload();
 };
 
 function editcontactField(div, contacts){
@@ -236,7 +236,6 @@ function deleteContact (id){
     headers: {
       "Content-type": "application/json"
     }
-  });
-
-  location.reload();
+  })
+  .then (location.reload());
 }
