@@ -10,12 +10,26 @@
   border-radius: 15px;
   justify-content: end;
   gap: 7px;
-
 }
 
-.searchButton {
-  margin-right: 15px;
+#searchField {
+  font-size: 100%;
+  font-family: sans-serif;
+  padding: 5px;
+  margin: 5px 15px 5px 15px;
+  border: 0;
+  outline: 0;
+  border-radius: 13px;
+  height: 20px;
+  width: 50px;
+  transition: width 0.5s ease-in-out, height 0.5s ease-in-out;
+}
 
+#searchField:focus {
+  border: 2px solid rgba(219, 219, 219, 0.816);
+  outline:0;
+  width: 100%;
+  height: 30px;
 }
 
 .addContactButton {
@@ -36,17 +50,17 @@
 }
 
 #plusSign {
-  display:flex;
+  display: flex;
   height: 100%;
   width: 100%;
   align-items: center;
   justify-content: center;
   font-size: 75px;
-  font-weight:100;
+  font-weight: 100;
 }
 
 #plusSign:hover {
-  cursor:pointer;
+  cursor: pointer;
 }
 
 .contactList {

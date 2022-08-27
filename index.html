@@ -13,7 +13,6 @@
     <header>
       <nav class = "navBar">
         <input id = "searchField" type = 'text' placeholder = 'Search...'> </input>
-        <button class = "searchButton" onclick="runSearch()">Search</button>
       </nav>
   </header>
     <main></main>
@@ -22,6 +21,10 @@
     document.addEventListener("DOMContentLoaded", () => {
       const mainElement = document.querySelector("main");
       getContacts(mainElement);
+
+      document.getElementById('searchField')
+        .addEventListener('keyup', function(event) {
+        event.preventDefault();{runSearch();}});
     });
   </script>
 </html>

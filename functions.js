@@ -1,15 +1,12 @@
 function runSearch(){
   const search = document.getElementById("searchField").value;
   const contactDivs = document.querySelectorAll(".contactDiv");
-
-
-  console.log(search);
-  console.log(contactDivs);
+  
   for (let i = 0; i < contactDivs.length; i++){
     if (search == ""){
       contactDivs[i].style.display = "block";
     }
-    if (contactDivs[i].textContent.toUpperCase().includes(search.toUpperCase()) || contactDivs[i].includes(search)){
+    if (contactDivs[i].textContent.toUpperCase().includes(search.toUpperCase())){
       contactDivs[i].style.display= "block";
     }
     else {contactDivs[i].style.display = 'none';}
